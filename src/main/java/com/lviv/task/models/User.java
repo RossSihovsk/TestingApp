@@ -2,9 +2,7 @@ package com.lviv.task.models;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class User {
@@ -19,6 +17,18 @@ public class User {
     @Column
     private Integer age;
 
+    @Column
+    private String email;
+
+    @Column
+    private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role>roles = new HashSet<>();
+
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Article> articles =new ArrayList<>();
 
@@ -31,10 +41,30 @@ public class User {
     public User() {
     }
 
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String name, Integer age, String email, String password, List<Article> articles) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.articles = articles;
+    }
 
     public User(String name, Integer age) {
         this.name = name;
         this.age = age;
+    }
+
+    public User(String name, Integer age, String email, String password) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.password = password;
     }
 
     public Integer getId() {
@@ -58,6 +88,29 @@ public class User {
         article.setUser(this);
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public boolean equals(Object o) {

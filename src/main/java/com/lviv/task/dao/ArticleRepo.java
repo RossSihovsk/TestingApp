@@ -1,5 +1,6 @@
 package com.lviv.task.dao;
 
+import com.lviv.task.dao.components.UserIdOnly;
 import com.lviv.task.models.Article;
 import com.lviv.task.models.Color;
 import org.springframework.data.jpa.repository.JpaRepository;

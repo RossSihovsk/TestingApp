@@ -1,6 +1,6 @@
 package com.lviv.task.service;
 
-import com.lviv.task.dao.NamesOnly;
+import com.lviv.task.dao.components.NamesOnly;
 import com.lviv.task.dao.UserRepo;
 import com.lviv.task.models.Article;
 import com.lviv.task.models.Color;
@@ -9,9 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -22,6 +21,14 @@ public class UserService {
     public List<User> allAgeMoreThan(Integer age){
 
       return   userRepo.findAllByAgeIsAfter(age);
+    }
+
+    Optional<User> findByEmail(String Email){
+        return userRepo.findByEmail(Email);
+    }
+
+    public boolean existsByEmail(String email){
+        return userRepo.existsByEmail(email);
     }
 
    public boolean saveUser(User user){
@@ -37,17 +44,10 @@ public class UserService {
         return userRepo.findUserById(id);
     }
 
-    public  List<User> findArticlemore(Integer article){
-        return  userRepo.findAllByArticlesIsAfter(article);
-    }
-
     public List<User> findAll(){
         return userRepo.findAll();
     }
 
-//    public List<User>test(){
-//        return userRepo.findDistinct();
-//    }
 
     @PostConstruct
     public void init() {

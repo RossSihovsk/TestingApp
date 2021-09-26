@@ -1,4 +1,4 @@
-package com.lviv.task.dao;
+package com.lviv.task.dao.components;
 
 
 import com.lviv.task.models.User;

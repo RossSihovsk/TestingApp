@@ -1,8 +1,7 @@
 package com.lviv.task.service;
 
 import com.lviv.task.dao.ArticleRepo;
-import com.lviv.task.dao.NamesOnly;
-import com.lviv.task.dao.UserIdOnly;
+import com.lviv.task.dao.components.UserIdOnly;
 import com.lviv.task.models.Article;
 import com.lviv.task.models.Color;
 import org.springframework.beans.factory.annotation.Autowired;
