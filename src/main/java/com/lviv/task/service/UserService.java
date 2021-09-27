@@ -2,6 +2,8 @@ package com.lviv.task.service;
 
 import com.lviv.task.dao.components.NamesOnly;
 import com.lviv.task.dao.UserRepo;
+import com.lviv.task.dao.components.UserIdOnly;
+import com.lviv.task.dto.UserDTO;
 import com.lviv.task.models.Article;
 import com.lviv.task.models.Color;
 import com.lviv.task.models.User;
@@ -9,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -18,9 +19,12 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    ArticleService articleService;
+
     public List<User> allAgeMoreThan(Integer age){
 
-      return   userRepo.findAllByAgeIsAfter(age);
+        return   userRepo.findAllByAgeIsAfter(age);
     }
 
     Optional<User> findByEmail(String Email){
@@ -31,7 +35,7 @@ public class UserService {
         return userRepo.existsByEmail(email);
     }
 
-   public boolean saveUser(User user){
+    public boolean saveUser(User user){
         userRepo.save(user);
         return true;
     }
@@ -49,6 +53,71 @@ public class UserService {
     }
 
 
+
+    public List<UserDTO> task1(Integer age){
+        System.out.println("\nTask1 start");
+
+        List<User> users = userRepo.findAllByAgeIsAfter(age);
+        List<UserDTO>userDTOS = new ArrayList<>();
+
+        for (User u: users){
+            userDTOS.add(new UserDTO(u.getId(),u.getName(),u.getAge(),u.getArticles()));
+        }
+        return userDTOS;
+    }
+
+
+    public List<UserDTO> task2( Color color){
+        System.out.println("\nTask2 start");
+        StringBuffer stringBuffer = new StringBuffer();
+
+        List<UserIdOnly> userIdOnly = articleService.findByColor(color);
+
+        Set<User> users = new HashSet<>();
+        for (UserIdOnly u: userIdOnly){
+            users.add(findById(u.getUserId()));
+        }
+        List<UserDTO>userDTOS = new ArrayList<>();
+        for (User u: users){
+
+            userDTOS.add(new UserDTO(u.getId(),u.getName(),u.getAge(),u.getArticles()));
+        }
+        System.out.println("\nTask2 end");
+        return userDTOS;
+    }
+
+
+    public List<UserDTO> task3(Integer articles ){
+        System.out.println("\nTask3 start");
+        Set<User> users = new HashSet<>(findAll());
+
+        users.removeIf(user -> user.getArticles().size() < articles+1);
+
+        List<UserDTO>userDTOS = new ArrayList<>();
+        for (User u: users){
+            userDTOS.add(new UserDTO(u.getId(),u.getName(),u.getAge(),u.getArticles()));
+        }
+        System.out.println("\nTask3 end");
+        return userDTOS;
+    }
+
+
+    public String task4(String name, Integer age, String text, Color color){
+        System.out.println("\nTask4 start");
+        User user = new User(name,age);
+        user.addArticle(new Article(color,text));
+        if (saveUser(user)){
+            System.out.println("User`s just been successfully saved");
+            System.out.println("\nTask4 end");
+            return"User`s just been successfully saved";
+        }
+
+        else {
+            System.out.println("Unexpected thing happens :( ");
+            System.out.println("\nTask4 end");
+            return "Unexpected thing happens :( ";
+        }
+    }
     @PostConstruct
     public void init() {
 

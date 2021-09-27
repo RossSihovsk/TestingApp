@@ -1,6 +1,5 @@
 package com.lviv.task.models;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.util.*;
 
@@ -122,7 +121,7 @@ public class User {
     @Override
     public boolean equals(Object o) {
         User user = (User) o;
-        return name.equals(user.name);
+        return name.equals(user.name)&id.equals(user.id);
     }
 
     @Override
