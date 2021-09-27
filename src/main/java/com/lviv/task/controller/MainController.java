@@ -24,11 +24,6 @@ public class MainController {
     @Autowired
     ArticleService articleService;
 
-    @GetMapping("/")
-    public String hello(){
-        return "index";
-    }
-
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     @PostMapping("/task1")
     public  StringBuffer task1(@RequestParam Integer age){

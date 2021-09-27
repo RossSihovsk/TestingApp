@@ -15,7 +15,7 @@ public class ArticleService {
     @Autowired
     ArticleRepo articleRepo;
 
-    void  saveArticle(Article article){
+    public void  saveArticle(Article article){
         articleRepo.save(article);
     }
 

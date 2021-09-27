@@ -47,6 +47,13 @@ public class User {
         this.password = password;
     }
 
+    public User(Integer id, String name, Integer age, String email) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.email = email;
+    }
+
     public User(String name, Integer age, String email, String password, List<Article> articles) {
         this.name = name;
         this.age = age;
